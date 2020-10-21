@@ -1,0 +1,13 @@
+<form type="get" action="." style="margin: 0">
+    <input  id="search_box" type="text" name="search_box"  placeholder="Search..." >
+    <button id="search_submit" type="submit" >Submit</button>
+</form>
+
+<div>
+<h1> CITY: {{city_weather.city}}<h1>
+<h2>TEMP:</h2>
+<p>{{city_weather.temp}}°F</p>
+<h2>DESC:</h2>
+<p>{{city_weather.desc}}</p>
+<img src="http://openweathermap.org/img/wn/{{city_weather.icon}}.png"/>
+</div
