@@ -3,9 +3,7 @@ from django.http import HttpResponse
 import string
 from random import *
 
-
-def index(request):
-    class Password:
+class Password:
         def __init__(self, length, letters, numbers, symbols, capitalization):
             self.length = length
             self.letters = letters
@@ -14,9 +12,9 @@ def index(request):
             self.capitalization = capitalization
 
 
-    test = Password(20, False, True, True, True)
+test = Password(20, False, True, True, True)
 
-    def create_password(test):
+def create_password(test):
         characters = string.ascii_letters
         symbols = string.punctuation
         numbers = string.digits
@@ -52,10 +50,19 @@ def index(request):
             print("working on the password")
             things = characters + numbers + symbols
             password = "".join(choice(things) for x in range(randint(test.length, test.length)))
-            print(password)
 
-    create_password(test)
-    return HttpResponse("Hello, world. You're at the password index.")
+            password_obj ={
+                "generated" : password
+            }
+            password_data = {'password_obj' : password_obj}
+            return password_data
+
+
+
+def index(request):
+    
+    context=create_password(test)
+    return render(request, 'password/password.html', context)
 
 
 # Create your views here.
