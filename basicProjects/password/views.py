@@ -1,7 +1,7 @@
 from django.shortcuts import render
-from django.http import HttpResponse
 import string
 from random import *
+from .form import Password_Form
 
 class Password:
         def __init__(self, length, letters, numbers, symbols, capitalization):
@@ -11,8 +11,6 @@ class Password:
             self.symbols = symbols
             self.capitalization = capitalization
 
-
-test = Password(20, False, True, True, True)
 
 def create_password(test):
         characters = string.ascii_letters
@@ -51,18 +49,29 @@ def create_password(test):
             things = characters + numbers + symbols
             password = "".join(choice(things) for x in range(randint(test.length, test.length)))
 
-            password_obj ={
-                "generated" : password
-            }
-            password_data = {'password_obj' : password_obj}
-            return password_data
+            return password
 
 
 
 def index(request):
-    
-    context=create_password(test)
-    return render(request, 'password/password.html', context)
+    if request.method == 'POST':
+        form = Password_Form(request.POST)
+        if form.is_valid():
+            length = form.cleaned_data['length']
+            letters = form.cleaned_data['letters']
+            numbers = form.cleaned_data['numbers']
+            symbols = form.cleaned_data['symbols']
+            capitalization = form.cleaned_data['capitalization']
+
+            test = Password(length, letters, numbers, symbols, capitalization)
+            
+
+            print(create_password(test))
+   
+    form = Password_Form()
+    password_obj = create_password(test)
+
+    return render(request, 'password/password.html', {'form':form, 'password_obj': password_obj })
 
 
 # Create your views here.

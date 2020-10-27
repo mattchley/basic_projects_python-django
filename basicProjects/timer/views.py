@@ -16,6 +16,7 @@ countdown = {
     'time' : string_time
 }
 timer_data = {'countdown' : countdown}
+
 def index(request):
     context = timer_data
     return render(request, 'timer/timer.html', context)
