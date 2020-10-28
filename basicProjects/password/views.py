@@ -1,7 +1,7 @@
 from django.shortcuts import render
 import string
 from random import *
-from .form import Password_Form
+from .forms import Password_Form
 
 class Password:
         def __init__(self, length, letters, numbers, symbols, capitalization):
@@ -17,11 +17,7 @@ def create_password(test):
         symbols = string.punctuation
         numbers = string.digits
 
-        if 128 >= test.length >= 12:
-            print("this password will be %s long" % test.length)
-        else:
-            print("you need to create a different kind of password")
-        if test.letters == True:
+        if test.letters:
             print("Letters will be used")
         else:
             characters = ''
@@ -43,7 +39,6 @@ def create_password(test):
 
         if test.letters == False and test.numbers == False and test.symbols == False:
             print("I can't make a password with nothing :(")
-            sys.exit()
         else:
             print("working on the password")
             things = characters + numbers + symbols
@@ -65,11 +60,13 @@ def index(request):
 
             test = Password(length, letters, numbers, symbols, capitalization)
             
+            password_obj = create_password(test)
 
-            print(create_password(test))
-   
-    form = Password_Form()
-    password_obj = create_password(test)
+    else:
+        form = Password_Form()
+        password_obj = None 
+    
+    
 
     return render(request, 'password/password.html', {'form':form, 'password_obj': password_obj })
 

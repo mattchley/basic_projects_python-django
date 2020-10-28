@@ -1,9 +1,8 @@
 from django.shortcuts import render
-from django.http import HttpResponse
 import os
 import requests
 import json
-
+from .forms import Weather_Form
 # searches for the weather data the user inputs
 def weather_search(location):
     api_key=os.getenv("WEATHER")
@@ -16,16 +15,29 @@ def weather_search(location):
         "desc" : data['weather'][0]['description'],
         "icon" : data['weather'][0]['icon'],
     }
-    weather_data = {'city_weather' : city_weather}
-    return weather_data
+    # weather_data = {'city_weather' : city_weather}
+    return city_weather
 # 
 def index(request):
-        if request.method == 'GET':
-            location = request.GET.get('search_box', "San Diego")
-            context = weather_search(location)
-            pass
+    (print("hit1"))
+    if request.method == 'POST':
+        (print('hit2'))
+        form = Weather_Form(request.POST)
+        (print('hit3'))
+        if form.is_valid():
+            location = form.cleaned_data['location']
+            city_obj = weather_search(location)
+            print(city_obj)
+            print({'city_obj': city_obj})
+    else:
+        print('hit4')
+        form = Weather_Form()
+        city_obj = None   
 
-        return render(request, 'weather/weather.html', context)
+    
+    
+    
+    return render(request, 'weather/weather.html', {'form':form, 'city_obj': city_obj})
     
     
     
