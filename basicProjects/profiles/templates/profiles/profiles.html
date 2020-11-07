@@ -1,0 +1,17 @@
+<p>profiles here</p>
+
+<form method="post">
+{% csrf_token %}
+    {{form}}
+    <button type="Submit">Submit</button>
+</form>
+
+<div>
+<h1> USER: {{gitprofile.user}}<h1>
+<img src={{gitprofile.avatar}}/>
+<h2>Website:</h2>
+<a href={{gitprofile.url}}> {{gitprofile.user}} GitHub Site</a>
+<ol>
+<li> {{gitprofile.repos}} </li>
+</ol>
+</div>

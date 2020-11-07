@@ -1,14 +1,13 @@
 from django.shortcuts import render
-from django.http import HttpResponse
 import requests
 import os
-
-
-def index(request):
-
+from .forms import User_Form
+import json
+user= 'mattchley'
+def gituser_search(user):
     github_api_key=os.getenv("GITHUB")
-    user= os.getenv("GIT_USER")
-    url = "https://api.github.com/users/%s/repos" %(user)
+    
+    url = "https://api.github.com/search/users?q=%s" %(user)
 
     headers = {
         "Authorization": "Basic '%s'" %(github_api_key)
@@ -17,6 +16,27 @@ def index(request):
     response = requests.request(
         "GET", url, headers=headers)
 
-    print(response.text)
-    return HttpResponse("Hello, world. You're at the profiles index.")
+    data = json.loads(response.text)
+    user_data = {
+        "user" :data['items'][0]['login'],
+        "avatar" :data['items'][0]['avatar_url'],
+        "url" :data['items'][0]['html_url'],
+        "repos" :data['items'][0]['repos_url'],
+    }
+    return user_data
+
+def index(request):
+    if request.method == 'POST':
+        form = User_Form(request.POST)
+        if form.is_valid():
+            user = form.cleaned_data['user']
+            gitprofile = gituser_search(user)
+    else:
+            form = User_Form()
+            gitprofile = None   
+
+    
+    
+    
+    return render(request, 'profiles/profiles.html', {'form':form, 'gitprofile': gitprofile})
 # Create your views here.
