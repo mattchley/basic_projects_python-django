@@ -13,3 +13,23 @@
 <p>{{city_obj.desc}}</p>
 <img src="http://openweathermap.org/img/wn/{{city_obj.icon}}.png"/>
 </div>
+
+
+{% comment %} <div>
+{% for x in previous_list reversed%}
+   <p>{{x}}</p>
+{% endfor %}
+</div> {% endcomment %}
+
+<div>
+<h3>PREVIOUS SEARCHES<h3>
+{% for x in previous_list|slice:":5" reversed%}
+<h5> CITY: {{x.city}}<h5>
+<h6>TEMP:</h6>
+<p>{{x.temp}}°F</p>
+<h5>DESC:</h5>
+<p>{{x.desc}}</p>
+<img src="http://openweathermap.org/img/wn/{{x.icon}}.png"/>
+
+{% endfor %}
+</div>
