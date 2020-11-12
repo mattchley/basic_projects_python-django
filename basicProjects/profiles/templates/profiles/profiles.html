@@ -11,7 +11,37 @@
 <img src={{gitprofile.avatar}}/>
 <h2>Website:</h2>
 <a href={{gitprofile.url}}> {{gitprofile.user}} GitHub Site</a>
-<ol>
-<li> {{gitprofile.repos}} </li>
-</ol>
 </div>
+
+<div>
+<h2>Repos Available:<h2>
+{% comment %} do a column based creation {% endcomment %}
+<table style="width:100%">
+<tr>
+
+  {% for x in repoprofile.title%}
+   <td>{{x}}</td>
+{% endfor %}
+  </tr>
+
+  <tr>
+
+  {% for x in repoprofile.url%}
+   <td>
+   <a href={{x}}>{{x}}</a>
+   </td>
+{% endfor %}
+  </tr>
+
+   <tr>
+
+  {% for x in repoprofile.updated%}
+   <td>{{x}}</td>
+{% endfor %}
+  </tr>
+</table>
+{% comment %} when it is a singular object and not an array of objs, still puts out [] {% endcomment %}
+{% comment %} {% for v, w in repoprofile.items %}
+{{v}}
+{{w}}
+{% endfor %} {% endcomment %}
